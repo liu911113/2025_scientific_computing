@@ -1,0 +1,28 @@
+#HW1
+import math
+
+def runge(x):
+    return 1/(1+x*x)
+
+def lagrange_interpolation(x_nodes, y_nodes, x):
+    n = len(x_nodes)
+    result = 0
+    for i in range(n):
+        term = y_nodes[i]
+        for j in range(n):
+            if j != i:
+                term *= (x - x_nodes[j]) / (x_nodes[i] - x_nodes[j])
+        result += term
+    return result
+
+print("\n=== HW2: Runge's phenomenon ===")
+test_points = [i for i in range(-5, 6)]  # integer points -5 to 5
+
+for n in [5, 10, 15, 20]:
+    x_nodes = [ -5 + 10*i/n for i in range(n+1) ]  # equally spaced
+    y_nodes = [ runge(x) for x in x_nodes ]
+    print(f"\nInterpolation with n={n}")
+    for x in test_points:
+        true_val = runge(x)
+        interp_val = lagrange_interpolation(x_nodes, y_nodes, x)
+        print(f"x={x:2d}, f(x)={true_val:.6f}, P(x)={interp_val:.6f}, error={abs(true_val-interp_val):.2e}")
