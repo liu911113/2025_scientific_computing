@@ -1,0 +1,28 @@
+#HW2
+import math
+
+# Function
+def f(x):
+    return math.sin(x)
+
+# Lagrange interpolation
+def lagrange_interpolation(x_nodes, y_nodes, x):
+    n = len(x_nodes)
+    result = 0
+    for i in range(n):
+        term = y_nodes[i]
+        for j in range(n):
+            if j != i:
+                term *= (x - x_nodes[j]) / (x_nodes[i] - x_nodes[j])
+        result += term
+    return result
+
+# Nodes
+x_nodes = [i/9 for i in range(10)]
+y_nodes = [f(x) for x in x_nodes]
+
+print("=== HW1: sin(x) interpolation ===")
+for x in [i/10 for i in range(11)]:  # test points
+    true_val = f(x)
+    interp_val = lagrange_interpolation(x_nodes, y_nodes, x)
+    print(f"x={x:.2f}, f(x)={true_val:.6f}, P(x)={interp_val:.6f}, error={abs(true_val-interp_val):.2e}")
